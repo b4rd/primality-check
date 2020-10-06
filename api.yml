@@ -1,0 +1,59 @@
+openapi: 3.0.1
+info:
+  title: Primality Check API
+  version: '1.0'
+servers: []
+paths:
+  '/primality-check':
+    get:
+      summary: Tells whether the given number is a prime.
+      description: |
+        Returns whether the given number is prime number, along with the next prime number (i.e. input: N, output: P where P>=N and P is prime).
+      operationId: primality-test
+      parameters:
+        - name: number
+          in: query
+          description: The number to test.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Result of the primality test.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/primalityCheckResponse'
+        '400':
+          $ref: '#/components/responses/400_badRequest'
+        '500':
+          $ref: '#/components/responses/500_internalServerError'
+components:
+  schemas:
+    primalityCheckResponse:
+      type: object
+      properties:
+        isPrime:
+          type: boolean
+          description: true, if the provided number is a prime, otherwise false.
+          example: true
+        nextPrime:
+          type: integer
+          format: int64
+          nullable: true
+          description: A prime which is greater than or equal to the given number.
+          example: 7
+  responses:
+    400_badRequest:
+      description: Bad request.
+      content:
+        text/plain:
+          schema:
+            type: string
+    500_internalServerError:
+      description: An unexpected error occurred.
+      content:
+        text/plain:
+          schema:
+            type: string
