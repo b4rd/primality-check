@@ -93,8 +93,7 @@ class PrimalityCheckControllerTest {
     @Test
     @DisplayName("Should send a custom error message if the input is not an integer")
     void inputIsNotAnIntegerHandler() {
-        ResponseEntity<ApiError> response = controller.handleMethodArgumentTypeMismatch(
-                new MethodArgumentTypeMismatchException("asd", long.class, "number", mock(MethodParameter.class), new NumberFormatException()));
+        ResponseEntity<ApiError> response = controller.handleMethodArgumentTypeMismatch(argumentTypeMismatchException("asd"));
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(response.getBody()).isEqualToComparingFieldByField(new ApiError("Parameter 'number' must be an integer"));
